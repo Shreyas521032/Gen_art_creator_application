@@ -38,7 +38,7 @@ if st.button("Generate Art"):
     g = GenerativeImage(f1, f2)
     g.n = point_count
     
-g.generate()
+    g.generate()
 
     if not g.data1 or not g.data2:
         st.error("❌ Could not generate data. Likely cause: one of your functions returned invalid values.")
