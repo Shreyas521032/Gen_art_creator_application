@@ -40,26 +40,26 @@ with st.sidebar:
     )
 
     seed = st.number_input("🌱 Random Seed", min_value=0, max_value=9999, value=42, step=1)
-    dpi = st.slider("🖼️ DPI", min_value=72, max_value=300, value=100)
+    dpi = st.slider("🖼️ Save DPI", min_value=72, max_value=300, value=100)
     size = st.slider("📐 Figure Size", min_value=4, max_value=20, value=10)
     alpha = st.slider("🔆 Transparency (alpha)", min_value=0.0, max_value=1.0, value=0.7)
 
 if st.button("✨ Generate Art"):
     try:
         g = GenerativeImage(f1, f2)
-        g.seed = seed  # ✅ Set seed directly
+        g.seed = seed
         if projection != "default":
-            g.projection = projection  # ✅ Set projection directly
+            g.projection = projection
 
-        g.generate()  # ✅ generate without arguments
-        g.plot(color=color, alpha=alpha, size=size, dpi=dpi)
+        g.generate()
+        g.plot(color=color, alpha=alpha, size=size)
 
         st.pyplot(g.figure)
 
         with st.expander("💾 Save Options"):
             filename = st.text_input("Filename", value="art.png")
             if st.button("Save Image"):
-                g.save_image(file_adr=filename)
+                g.save_image(file_adr=filename, dpi=dpi)  # ✅ dpi here
                 st.success(f"Image saved as {filename}")
 
     except Exception as e:
