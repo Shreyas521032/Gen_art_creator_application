@@ -53,9 +53,7 @@ if st.button("✨ Generate Art"):
 
         g.generate()
         fig = g.plot(color=color, alpha=alpha, size=size)
-        st.pyplot(fig)
-
-        st.pyplot(g.figure)
+        st.pyplot(fig)  
 
         with st.expander("💾 Save Options"):
             filename = st.text_input("Filename", value="art.png")
