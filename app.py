@@ -163,7 +163,7 @@ def create_art():
     # Apply other filters
     if st.session_state.apply_gradient:
         alpha = st.session_state.alpha
-        g.plot(color=(255, 87, 51, 128))
+        g.plot(color=(255, 87, 51))
     
     fig = plt.figure(figsize=(st.session_state.width, st.session_state.height))
     
