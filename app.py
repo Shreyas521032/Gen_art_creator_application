@@ -148,7 +148,7 @@ def create_art():
     
     # Apply filters according to settings
     if st.session_state.apply_random_sampling:
-        g.sample_random(st.session_state.random_sampling)
+        g.generate(st.session_state.random_sampling)
     
     if st.session_state.apply_random_color:
         g.random_color()
@@ -303,7 +303,7 @@ with col1:
             # Show example image placeholder
             st.image("https://raw.githubusercontent.com/sepandhaghighi/samila/master/otherfiles/images_2.png", 
                     caption="Example of generative art created with Samila", 
-                    use_column_width=True)
+                    use_container_width=True)
     else:
         try:
             g, fig = create_art()
