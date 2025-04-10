@@ -3,6 +3,8 @@
 
 A Streamlit-based web app to generate beautiful generative art using custom mathematical expressions and parameters.
 
+🌍 **Live Project**: [https://shreyas-genart-creator-application.streamlit.app](https://shreyas-genart-creator-application.streamlit.app/)
+
 ## 🚀 Features
 
 - **Multiple Art Styles**: Points, Lines, Connected Lines, and Polar Coordinates.
