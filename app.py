@@ -154,7 +154,7 @@ def create_art():
         g.random_color()
         g.plot()
     else:
-        g.plot(color=color, bgcolor=bgcolor)
+        g.plot(color=color)
     
     # Apply projections
     if projection != "None":
