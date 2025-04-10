@@ -16,7 +16,6 @@ Customize your own piece of art using mathematical functions and projections.
 with st.sidebar:
     st.header("🛠️ Configuration")
 
-    # Choose mathematical functions
     func_options = {
         "sin(x*y)": lambda x, y: math.sin(x * y),
         "cos(x+y)": lambda x, y: math.cos(x + y),
@@ -45,19 +44,22 @@ with st.sidebar:
     size = st.slider("📐 Figure Size", min_value=4, max_value=20, value=10)
     alpha = st.slider("🔆 Transparency (alpha)", min_value=0.0, max_value=1.0, value=0.7)
 
-# Generate art
 if st.button("✨ Generate Art"):
     try:
         g = GenerativeImage(f1, f2)
-        g.generate(seed=seed, projection=projection)  # updated line
-        g.plot(color=color, alpha=alpha, size=size, dpi=dpi)  # updated line
+        g.seed = seed  # ✅ Set seed directly
+        if projection != "default":
+            g.projection = projection  # ✅ Set projection directly
 
-        st.pyplot(g.figure)  # show plot in Streamlit
+        g.generate()  # ✅ generate without arguments
+        g.plot(color=color, alpha=alpha, size=size, dpi=dpi)
+
+        st.pyplot(g.figure)
 
         with st.expander("💾 Save Options"):
             filename = st.text_input("Filename", value="art.png")
             if st.button("Save Image"):
-                g.save_image(file_adr=filename)  # updated line
+                g.save_image(file_adr=filename)
                 st.success(f"Image saved as {filename}")
 
     except Exception as e:
