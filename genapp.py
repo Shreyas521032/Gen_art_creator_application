@@ -54,8 +54,6 @@ if st.button("✨ Generate Art"):
         fig = g.plot(color=color, alpha=alpha, size=size)
         st.pyplot(fig)  
 
-  
-
         with st.expander("💾 Save Options"):
             filename = st.text_input("Filename", value="art.png")
             if st.button("Save Image"):
