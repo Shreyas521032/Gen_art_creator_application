@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgba
 import random
 import math
-
 # Set page configuration
 st.set_page_config(layout="wide", page_title="Generative Art Creator")
 st.title("🎨 Generative Art Creator")
