@@ -81,7 +81,7 @@ with st.sidebar:
     st.header("Shape Settings")
     if art_style == "Points":
         size = st.slider("Point Size", 0.1, 10.0, 1.0)
-    elif art_style in ["Lines", "Connected Lines"]:
+    elif art_style in ["Lines", "Connected Lines", "Polar"]:
         line_width = st.slider("Line Width", 0.1, 5.0, 0.5)
     
     point_count = st.slider("Number of Points", 1000, 20000, 5000, step=500)
