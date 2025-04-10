@@ -152,8 +152,9 @@ def create_art():
     
     if st.session_state.apply_random_color:
         g.random_color()
+        g.plot()
     else:
-        g.set_color(color)
+        g.plot(color=color, bgcolor=bgcolor)
     
     # Apply projections
     if projection != "None":
