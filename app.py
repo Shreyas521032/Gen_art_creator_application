@@ -162,13 +162,13 @@ def create_art():
     
     # Apply other filters
     if st.session_state.apply_gradient:
-    fig = plt.figure(figsize=(st.session_state.width, st.session_state.height))
-    plt.axis('off')
-    g.plot(alpha=st.session_state.alpha, color=color if not st.session_state.apply_random_color else None)
-else:
-    fig = plt.figure(figsize=(st.session_state.width, st.session_state.height))
-    plt.axis('off')
-    g.plot(color=color if not st.session_state.apply_random_color else None)
+        fig = plt.figure(figsize=(st.session_state.width, st.session_state.height))
+        plt.axis('off')
+        g.plot(alpha=st.session_state.alpha, color=color if not st.session_state.apply_random_color else None)
+    else:
+        fig = plt.figure(figsize=(st.session_state.width, st.session_state.height))
+        plt.axis('off')
+        g.plot(color=color if not st.session_state.apply_random_color else None)
     
     fig = plt.figure(figsize=(st.session_state.width, st.session_state.height))
     
