@@ -51,9 +51,10 @@ if st.button("✨ Generate Art"):
         if projection != "default":
             g.projection = projection
 
-        g.generate()
         fig = g.plot(color=color, alpha=alpha, size=size)
         st.pyplot(fig)  
+
+  
 
         with st.expander("💾 Save Options"):
             filename = st.text_input("Filename", value="art.png")
