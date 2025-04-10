@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-from samila import GenerativeImage, Projection, VALID_COLORS
+from samila import GenerativeImage, Projection
+import matplotlib.cm as cm
 import random
 import numpy as np
 from math import sin, cos, tan, log, exp, sqrt
@@ -236,14 +237,14 @@ with st.sidebar:
     # Color options
     st.session_state.apply_random_color = st.checkbox("Use Random Colors", value=False)
     
-    if not st.session_state.apply_random_color:
-        color_index = sorted(VALID_COLORS).index(st.session_state.color) if st.session_state.color in VALID_COLORS else 0
-        st.session_state.color = st.selectbox(
-            "Color Palette", 
-            sorted(VALID_COLORS), 
-            index=color_index
-        )
-    
+    if not st.session_state.apply_random_color: 
+      valid_colormaps = sorted(m for m in plt.colormaps() if not m.endswith("_r"))
+      color_index = valid_colormaps.index(st.session_state.color) if st.session_state.color in valid_colormaps else 0
+      st.session_state.color = st.selectbox(
+          "Color Palette", 
+          valid_colormaps, 
+          index=color_index
+      )
     # Projection options
     projection_options = ["None", "rectilinear", "polar", "aitoff", "hammer", "lambert", "mollweide"]
     projection_index = projection_options.index(st.session_state.projection) if st.session_state.projection in projection_options else 0
