@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgba
 import random
 import math
+import io  # Added import at the top
 
 # Set page configuration
 st.set_page_config(layout="wide", page_title="Generative Art Creator")
@@ -34,6 +35,32 @@ def safe_function(expr):
             return 0
     return func
 
+# Predefined function options
+function_options = {
+    "sin(x)": "sin(x)",
+    "cos(x)": "cos(x)",
+    "sin(x) * cos(x)": "sin(x) * cos(x)",
+    "sin(x) * cos(x * 0.5)": "sin(x) * cos(x * 0.5)",
+    "sin(x*x)": "sin(x*x)",
+    "cos(x) * sin(x * 0.1)": "cos(x) * sin(x * 0.1)",
+    "x * sin(x)": "x * sin(x)",
+    "sin(1/x)": "sin(1/x)",
+    "sin(x) + cos(3*x)": "sin(x) + cos(3*x)",
+    "random() * sin(x)": "random() * sin(x)",
+    "exp(-x*x) * sin(x)": "exp(-x*x) * sin(x)",
+    "Custom...": "custom"
+}
+
+polar_function_options = {
+    "2 * sin(3 * t)": "2 * sin(3 * t)",
+    "sin(5 * t)": "sin(5 * t)",
+    "1 + cos(t)": "1 + cos(t)",
+    "2 + sin(7 * t) * 0.5": "2 + sin(7 * t) * 0.5",
+    "abs(sin(4 * t)) + 0.5": "abs(sin(4 * t)) + 0.5",
+    "t/3": "t/3",
+    "Custom...": "custom"
+}
+
 # Sidebar for user inputs
 with st.sidebar:
     st.header("Art Style")
@@ -59,16 +86,34 @@ with st.sidebar:
     
     point_count = st.slider("Number of Points", 1000, 20000, 5000, step=500)
     
-    # Function expressions
+    # Function expressions with dropdown options
     st.header("Function Expressions")
     st.write("Use x, sin, cos, sqrt, exp, pi, random(), etc.")
     
     if art_style == "Polar":
-        r_expr = st.text_input("r(t)", "2 * sin(3 * t)", key="r_input")
-        theta_expr = st.text_input("θ(t)", "t", key="theta_input")
+        r_option = st.selectbox("r(t) function", list(polar_function_options.keys()), index=0)
+        if r_option == "Custom...":
+            r_expr = st.text_input("Custom r(t)", "2 * sin(3 * t)")
+        else:
+            r_expr = polar_function_options[r_option]
+            
+        theta_option = st.selectbox("θ(t) function", list(polar_function_options.keys()), index=5)
+        if theta_option == "Custom...":
+            theta_expr = st.text_input("Custom θ(t)", "t")
+        else:
+            theta_expr = polar_function_options[theta_option]
     else:
-        f1_expr = st.text_input("f1(x)", "sin(x) * cos(x * 0.5)", key="f1_input")
-        f2_expr = st.text_input("f2(x)", "cos(x) * sin(x * 0.1)", key="f2_input")
+        f1_option = st.selectbox("f1(x) function", list(function_options.keys()), index=3)
+        if f1_option == "Custom...":
+            f1_expr = st.text_input("Custom f1(x)", "sin(x) * cos(x * 0.5)")
+        else:
+            f1_expr = function_options[f1_option]
+            
+        f2_option = st.selectbox("f2(x) function", list(function_options.keys()), index=5)
+        if f2_option == "Custom...":
+            f2_expr = st.text_input("Custom f2(x)", "cos(x) * sin(x * 0.1)")
+        else:
+            f2_expr = function_options[f2_option]
     
     # Additional effects
     st.header("Effects")
@@ -192,22 +237,48 @@ with col2:
             fig = generate_art()
             st.pyplot(fig)
             
-            # Add download button
+            # Add download buttons
             buf = io.BytesIO()
             fig.savefig(buf, format="png", dpi=300, bbox_inches="tight", facecolor=bg_color)
             buf.seek(0)
             st.download_button(
-                label="📥 Download Artwork",
+                label="📥 Download as PNG",
                 data=buf,
                 file_name="generative_art.png",
                 mime="image/png",
                 use_container_width=True
             )
+            
+            # Save as SVG option
+            buf_svg = io.BytesIO()
+            fig.savefig(buf_svg, format="svg", bbox_inches="tight", facecolor=bg_color)
+            buf_svg.seek(0)
+            st.download_button(
+                label="📥 Download as SVG",
+                data=buf_svg,
+                file_name="generative_art.svg",
+                mime="image/svg+xml",
+                use_container_width=True
+            )
+            
+            # Save expressions and settings
+            if art_style == "Polar":
+                settings = f"Art Style: {art_style}\nr(t): {r_expr}\nθ(t): {theta_expr}\n"
+            else:
+                settings = f"Art Style: {art_style}\nf1(x): {f1_expr}\nf2(x): {f2_expr}\n"
+                
+            settings += f"Points: {point_count}\nJitter: {jitter}\nMirror: {mirror}\nRotation: {rotate}°"
+            
+            st.download_button(
+                label="📥 Save Settings as Text",
+                data=settings,
+                file_name="art_settings.txt",
+                mime="text/plain",
+                use_container_width=True
+            )
+            
         except Exception as e:
             st.error(f"Error generating art: {str(e)}")
-
-# Add missing import
-import io
 
 # Add explanation
 with st.expander("How to use this app"):
@@ -216,17 +287,12 @@ with st.expander("How to use this app"):
     
     1. **Choose a style**: Points, Lines, Connected Lines, or Polar coordinates
     2. **Adjust colors**: Pick colors and transparency
-    3. **Enter mathematical expressions**: Use functions like sin, cos, sqrt, etc.
+    3. **Select mathematical expressions**: Choose from presets or create your own
     4. **Apply effects**: Add jitter, mirroring or rotation
-    5. **Generate and download**: Create your artwork and save it
+    5. **Generate and download**: Create your artwork and save it as PNG or SVG
     
-    ### Example expressions to try:
-    - `sin(x) * cos(x * 0.5)`
-    - `sin(x*x) * 3`
-    - `sin(x) * sin(10/x)` 
-    - `random() * sin(x)`
-    
-    For polar coordinates:
-    - r: `2 * sin(5 * t)`
-    - θ: `t`
+    ### Function options:
+    Select from the dropdown menu or choose "Custom..." to enter your own expression.
+    You can use variables (x, t), functions (sin, cos, sqrt, exp), constants (pi, e),
+    and operators (+, -, *, /).
     """)
